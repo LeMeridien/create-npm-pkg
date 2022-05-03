@@ -23,6 +23,8 @@
   },
   "homepage": "https://github.com/LeMeridien/create-npm-pkg#readme",
   "dependencies": {
-    "chalk": "^5.0.1"
+    "chalk": "^5.0.1",
+    "commander": "^9.2.0",
+    "envinfo": "^7.8.1"
   }
 }
