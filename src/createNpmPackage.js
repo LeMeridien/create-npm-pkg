@@ -53,10 +53,13 @@ const init = async () => {
 
 	if (program.info) {
 		console.log(chalk.bold('\nEnvironment Info:'));
+
 		console.log(
 			`\n  current version of ${packageJson.name}: ${packageJson.version}`
 		);
+
 		console.log(`  running from ${__dirname}`);
+
 		const message = await envinfo.run(
 			{
 				System: ['OS', 'CPU'],
@@ -70,8 +73,58 @@ const init = async () => {
 				showNotFound: true
 			}
 		);
+
 		return console.log(message);
 	}
+
+	if (typeof projectName === 'undefined') {
+		console.error('Please specify the project directory:');
+		console.log(
+			`  ${chalk.cyan(program.name())} ${chalk.green('<project-directory>')}`
+		);
+		console.log();
+		console.log('For example:');
+		console.log(
+			`  ${chalk.cyan(program.name())} ${chalk.green('my-npm-package')}`
+		);
+		console.log();
+		console.log(
+			`Run ${chalk.cyan(`${program.name()} --help`)} to see all options.`
+		);
+		process.exit(1);
+	}
+
+	createPkg(
+		projectName,
+		program.verbose,
+		program.scriptsVersion,
+		program.template
+	);
+};
+
+const createPkg = (name, verbose, version, template) => {
+	const root = path.resolve(name);
+	const pkgName = path.basename(root);
+
+	const packageJson = {
+		name: pkgName,
+		version: '0.1.0',
+		private: true
+	};
+
+	fs.writeFileSync(
+		path.join(root, 'package.json'),
+		JSON.stringify(packageJson, null, 2) + os.EOL
+	);
+
+	const originalDirectory = process.cwd();
+	process.chdir(root);
+
+	run(root, pkgName, version, verbose, originalDirectory, template);
+};
+
+const run = (root, pkgName, version, verbose, originalDirectory, template) => {
+	console.log('run app');
 };
 
 export { init };
