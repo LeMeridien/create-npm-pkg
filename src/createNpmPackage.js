@@ -127,4 +127,10 @@ const run = (root, pkgName, version, verbose, originalDirectory, template) => {
 	console.log('run app');
 };
 
+const getInstallPackage = (version, originalDirectory) => {
+	let packageToInstall = 'test';
+
+	return Promise.resolve(packageToInstall);
+};
+
 export { init };
